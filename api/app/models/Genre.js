@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize');
 const sequelize = require('./db');
 const Livre = require('./Livre');
 
-const Genre = sequelize.define('genre', {
+const Genre = sequelize.define('Genre', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,

@@ -1,31 +1,31 @@
 const { Sequelize } = require('sequelize');
 const sequelize = require('./db');
-const Genre = require('./Genre');
+const User = require('./User');
 
-const Livre = sequelize.define('Livre', {
+const Client = sequelize.define('Client', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    titre: {
+    nom: {
         type: Sequelize.STRING
     },
-    description: {
+    prenom: {
         type: Sequelize.STRING
     },
-    couverture: {
+    adresse: {
         type: Sequelize.STRING
     },
-    prix: {
-        type: Sequelize.FLOAT
+    telephone: {
+        type: Sequelize.STRING
     },
-    quantite: {
-        type: Sequelize.INTEGER
+    email: {
+        type: Sequelize.STRING
     },
 }, {
-    tableName: 'livres',
-    timestamps: true
+    tableName: 'clients',
+    timestamps: false
 });
 
-module.exports = Livre;
+module.exports = Client;

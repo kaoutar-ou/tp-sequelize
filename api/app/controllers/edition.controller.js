@@ -16,7 +16,7 @@ exports.findAll = async (req, res) => {
         const editions = await Genre.findAll(
             {
                 where,
-                include: [{model: Livre, as: 'livres'}]
+                include: [{model: Livre, as: 'Livres'}]
             }
         );
         console.log(editions);

@@ -2,7 +2,7 @@ module.exports = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "",
-    DB: "kaoutar-livres-db",
+    DB: "oubenaddi",
     DIALECT: "mysql",
     MAX_POOL: 5,
     MIN_POOL: 0,

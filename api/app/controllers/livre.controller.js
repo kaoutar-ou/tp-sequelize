@@ -5,7 +5,7 @@ const Edition = require('../models/Edition');
 
 exports.create = async (req, res) => {
     
-    if (!req.body.titre || !req.body.description || !req.body.couverture || !req.body.prix || !req.body.genre || !req.body.date_parution || !req.body.maison_edition) {
+    if (!req.body.titre || !req.body.quantite || !req.body.description || !req.body.couverture || !req.body.prix || !req.body.genre || !req.body.date_parution || !req.body.maison_edition) {
         res.status(400).send({
             message: "Vous devez remplir tous les champs."
         });
@@ -17,6 +17,7 @@ exports.create = async (req, res) => {
         description: req.body.description,
         couverture: req.body.couverture,
         prix: req.body.prix,
+        quantite: req.body.quantite,
     });
 
     livre.setGenre(req.body.genre);
@@ -62,7 +63,7 @@ exports.findAll = async (req, res) => {
     try {
         const livres = await Livre.findAll({
             where,
-            include: [{model: Genre, as: 'genre'}, {model: Edition, as: 'editions'}]
+            include: [{model: Genre, as: 'Genre'}, {model: Edition, as: 'Editions'}]
         });
         res.status(200).send(livres);
     } catch (error) {
@@ -78,7 +79,7 @@ exports.findOne = async (req, res) => {
 
     try {
         const livre = await Livre.findByPk(id, {
-            include: [{model: Genre, as: 'genre'}, {model: Edition, as: 'editions'}]
+            include: [{model: Genre, as: 'Genre'}, {model: Edition, as: 'Editions'}]
         });
         res.status(200).send(livre);
     } catch (error) {
@@ -105,6 +106,7 @@ exports.update = async (req, res) => {
         livre.description = req.body.description ? req.body.description : livre.description;
         livre.couverture = req.body.couverture ? req.body.couverture : livre.couverture;
         livre.prix = req.body.prix ? req.body.prix : livre.prix;
+        livre.quantite = req.body.quantite ? req.body.quantite : livre.quantite;
         livre.setGenre(req.body.genre ? req.body.genre : livre.genreId);
 
         await livre.save();
