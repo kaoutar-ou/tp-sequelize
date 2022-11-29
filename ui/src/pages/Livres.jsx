@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import { addAuthHeaders } from '../api/auth';
+import { UserContext } from '../App';
 import Genres from '../components/Genres';
 import ListeLivres from '../components/ListeLivres';
 import Search from '../components/Search';
@@ -10,6 +12,8 @@ const Livres = () => {
     const [genre, setGenre] = useState(0);
     const [search, setSearch] = useState("");
     const [genres, setGenres] = useState([]);
+
+    // const { user, handleSetUser } = React.useContext(UserContext);
 
     const handleSearch = (e) => {
         fetchAllLivres();
@@ -62,7 +66,6 @@ const Livres = () => {
     }, []);
   return (
     <div>
-
         <div className="grid">
             <div className="">
                 <Search setSearch={setSearch} handleSearch={handleSearch}/>

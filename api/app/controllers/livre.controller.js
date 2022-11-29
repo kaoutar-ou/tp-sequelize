@@ -4,8 +4,10 @@ const { Op } = require('sequelize');
 const Edition = require('../models/Edition');
 
 exports.create = async (req, res) => {
+    console.log("create");
     
     if (!req.body.titre || !req.body.quantite || !req.body.description || !req.body.couverture || !req.body.prix || !req.body.genre || !req.body.date_parution || !req.body.maison_edition) {
+        console.log("Vous devez remplir tous les champs.");
         res.status(400).send({
             message: "Vous devez remplir tous les champs."
         });

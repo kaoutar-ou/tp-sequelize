@@ -19,7 +19,7 @@ const Commande = sequelize.define('Commande', {
         allowNull: false,
         defaultValue: 'En cours',
     },
-    quntite: {
+    quantite: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { addAuthHeaders } from '../api/auth';
 
 const Ajout = () => {
     const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Ajout = () => {
         description: '',
         genre: '',
         prix: null,
+        quantite: null,
         date_parution: '',
         maison_edition: '',
         couverture: '',
@@ -51,7 +53,7 @@ const Ajout = () => {
     }
 
     const validateLivreForm = () => {
-        return livre.titre && livre.description && livre.genre && livre.couverture && livre.prix && couvertureFile.file && couvertureFile.fileName;
+        return livre.titre && livre.quantite && livre.description && livre.genre && livre.couverture && livre.prix && couvertureFile.file && couvertureFile.fileName;
     }
 
     const handleClick = async (e) => {
@@ -63,9 +65,9 @@ const Ajout = () => {
         if(validateLivreForm(livre)) {
             console.log('form is valid');
             try {
-                await axios.post('http://localhost:3002/api/livres', livre);
+                await axios.post('http://localhost:3002/api/livres', livre, { headers: addAuthHeaders() });
                 if (couvertureFile.file && couvertureFile.fileName) {
-                    await axios.post('http://localhost:3002/api/upload', formData);
+                    await axios.post('http://localhost:3002/api/upload', formData, { headers: addAuthHeaders() });
                 }
                 navigate('/');
             } catch (error) {
@@ -85,8 +87,10 @@ const Ajout = () => {
             <input className='m-3 w-full outline outline-1 outline-indigo-500 p-2 rounded-md' type="text" placeholder="Titre" onChange={handleChange} name="titre" />
             <input className='m-3 w-full outline outline-1 outline-indigo-500 p-2 rounded-md' type="text" placeholder="Description" onChange={handleChange} name="description" />
             <input className='m-3 w-full outline outline-1 outline-indigo-500 p-2 rounded-md' type="number" placeholder="Prix" onChange={handleChange} name="prix" />
+            <input className='m-3 w-full outline outline-1 outline-indigo-500 p-2 rounded-md' type="number" placeholder="Quantité" onChange={handleChange} name="quantite" />
             {/* <input className='m-3 w-full outline outline-1 outline-indigo-500 p-2 rounded-md' type="text" placeholder="Genre" onChange={handleChange} name="genre" /> */}
             <select className='m-3 w-full outline outline-1 outline-indigo-500 p-2 rounded-md' name="genre" onChange={handleChange}>
+                <option key={0} value={0}>--- séléctionner un genre ---</option>
                 {
                     genres.map((genre) => (
                         <option key={genre.id} value={genre.id}>{genre.nom}</option>

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { addAuthHeaders } from '../api/auth'
 
 const MiseJour = () => {
     let { id } = useParams()
@@ -60,16 +61,16 @@ const MiseJour = () => {
         if(validateLivreForm(livre)) {
             console.log('form is valid');
             try {
-                await axios.put('http://localhost:3002/api/livres/' + id , livre);
+                await axios.put('http://localhost:3002/api/livres/' + id , livre, { headers: addAuthHeaders() });
                 if (couvertureFile.file && couvertureFile.fileName) {
-                    await axios.post('http://localhost:3002/api/upload', formData);
+                    await axios.post('http://localhost:3002/api/upload', formData, { headers: addAuthHeaders() });
                 }
                 let livre_id = id;
                 editions.map(async (edition) => {
                     // if (edition.livreId === id) {
                     edition.livre_id = livre_id;
                     let id = edition.id;
-                    await axios.put('http://localhost:3002/api/editions/' + id, edition)
+                    await axios.put('http://localhost:3002/api/editions/' + id, edition, { headers: addAuthHeaders() })
                     // }
                 })
                 navigate('/');

@@ -5,36 +5,44 @@ const Edition = require('../models/Edition');
 const Commande = require('../models/Commande');
 const User = require('../models/User');
 
-exports.create = async (commande) => {
+exports.create = async (commande, userId) => {
 
-    if(!commande.userId || !commande.livreId || !commande.quntite || !commande.date) {
+    if(!userId || !commande.livreId || !commande.quantite) {
         // res.status(400).send({
         //     message: "Vous devez remplir tous les champs."
         // });
+        console.log("Vous devez remplir tous les champs.");
         return;
     }
 
     const livre = await Livre.findByPk(commande.livreId);
     if (!livre) {
+        console.log("Livre non trouvé.");
         return;
     }
 
-    const user = await User.findByPk(commande.userId);
+    const user = await User.findByPk(userId);
     if (!user) {
+        console.log("Utilisateur non trouvé.");
         return;
     }
 
-    const newCommande = await Commande.build({
-        userId: commande.userId,
-        livreId: commande.livreId,
-        quntite: commande.quntite,
-        date: commande.date,
-    });
+    console.log("userID" + userId);
+    console.log("userID" + user.id);
+    const newCommande = {
+        UserId: user.id,
+        LivreId: commande.livreId,
+        quantite: commande.quantite,
+        date: new Date().getTime(),
+    };
 
     try {
-        await Commande.save(newCommande);
-        livre.quntite = livre.quntite - commande.quntite;
-        await Livre.save(livre);
+        await Commande.create(newCommande);
+        livre.quantite = livre.quantite - commande.quantite;
+        await Livre.update(
+            { quantite: livre.quantite },
+            { where: { id: livre.id } }
+        );
 
         console.log(commande);
         // res.status(200).send(commande);
@@ -47,8 +55,52 @@ exports.create = async (commande) => {
     }
 }
 
+
+// try {
+//     await User.save(newUser);
+//     const commandes = req.body.commandes;
+//     commandes.forEach(commande => {
+//         commande.userId = newUser.id;
+//     });
+//     const newCommandes = await Commande.bulkCreate(
+//         commandes
+//     );
+//     res.status(200).send(newCommandes);
+// } catch (error) {
+//     res.status(400).send({
+//         message:
+//             error.message || "Une erreur a été rencontré."
+//     });
+// }
+
 exports.createMany = async (req, res) => {
+    const userInfo = req.body.user;
+    let user = await User.findOne({
+        where: {
+            [Op.or]: [
+                { email: userInfo.email },
+                { telephone: userInfo.telephone }
+            ]
+        }
+    });
+
+    if (!user) {
+        user = {
+            nom: userInfo.nom,
+            prenom: userInfo.prenom,
+            email: userInfo.email,
+            adresse: userInfo.adresse,
+            telephone: userInfo.telephone,
+        };   
+        try {
+            await User.create(user);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const commandes = req.body.commandes;
+    const userId = user.id;
     if (!commandes || commandes.length && commandes.length < 1) {
         res.status(400).send({
             message: "Pas de commande."
@@ -56,7 +108,7 @@ exports.createMany = async (req, res) => {
         return;
     } else {
         commandes.forEach(async (commande) => {
-            await this.create(commande);
+            await this.create(commande, userId);
         });
     }
     res.status(200).send(commandes);
