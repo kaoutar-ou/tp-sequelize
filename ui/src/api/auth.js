@@ -11,6 +11,7 @@ export function addAuthHeaders() {
 
 export function logout() {
     localStorage.removeItem('user');
+    localStorage.clear();
 }
 
 export function getUser() {

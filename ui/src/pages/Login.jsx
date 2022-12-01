@@ -47,9 +47,9 @@ const Login = () => {
         // navigate('/livres');
 }
   return (
-    <div>
+    <div className='bg-gray-200 min-h-screen'>
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-            <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
+            <div className="p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl w-5/6">
                 <h1 className="text-3xl font-semibold text-center text-indigo-900 uppercase">
                     Login
                 </h1>
@@ -83,7 +83,7 @@ const Login = () => {
                 
                     <div className="mt-6">
                         <button 
-                            onClick={handleSubmit}
+                            onClick={(e) => handleSubmit(e)}
                             className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600">
                             Se connecter
                         </button>

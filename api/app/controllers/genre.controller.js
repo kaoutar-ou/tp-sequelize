@@ -7,7 +7,7 @@ exports.findAll = async (req, res) => {
     try {
         console.log("genres");
         const genres = await Genre.findAll();
-        console.log(genres);
+        
         res.status(200).send(genres);
     } catch (error) {
         console.log(error);

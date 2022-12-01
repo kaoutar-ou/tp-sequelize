@@ -44,25 +44,24 @@ const Livre = (props) => {
     }
   return (
     <div>
-        <div className="py-4 px-5 outline outline-1 rounded-md outline-indigo-500 relative">
-        <div className="absolute top-0 right-0 px-3 py-1 bg-indigo-500 rounded-tr-md text-white">
+        <div className="py-4 px-5 rounded-md shadow-md relative bg-white">
+        <div className="absolute top-0 right-0 px-3 py-1 bg-emerald-500 rounded-tr-md text-white shadow-md">
             { livre.prix + " $" }
         </div>
         <img src={"http://localhost:3002/api/upload/" + livre.couverture} alt={livre.titre} className="w-full h-72 rounded-md" />
         <div className='my-5'>
             <div className='font-bold'>{livre.titre}</div>
             <div className=''>{livre.description}</div>
-            {showGenre && <div className='text-indigo-500'>{livre.genre}</div>}
+            {showGenre && <div className='text-indigo-500'>{livre.Genre.nom}</div>}
         </div>
         <div className='my-5'>
             <div className='font-bold'>Editions</div>
             {
-                livre.editions && livre.editions.length > 0 ? (
-                    livre.editions.map((edition) => (
+                livre.Editions && livre.Editions.length > 0 ? (
+                    livre.Editions.map((edition) => (
                         <div key={edition.id}>
                             <div key={"maison_edition" + edition.id} className='text-indigo-500'>{edition.maison_edition}</div>
                             <div key={"date_parution" + edition.id} className='text-indigo-500'>{edition.date_parution}</div>
-                            <h/>
                         </div>
                     ))
                 ) : (

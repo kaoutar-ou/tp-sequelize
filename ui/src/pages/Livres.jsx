@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import { addAuthHeaders } from '../api/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import { addAuthHeaders, getUser } from '../api/auth';
 import { UserContext } from '../App';
 import Genres from '../components/Genres';
 import ListeLivres from '../components/ListeLivres';
 import Search from '../components/Search';
 
 const Livres = () => {
+    const navigate = useNavigate();
     const [livres, setLivres] = useState([]);
     const [genre, setGenre] = useState(0);
     const [search, setSearch] = useState("");
@@ -65,17 +66,34 @@ const Livres = () => {
         fetchAllGenres();
     }, []);
   return (
-    <div>
+    <div className='bg-gray-200 min-h-screen'>
         <div className="grid">
             <div className="">
                 <Search setSearch={setSearch} handleSearch={handleSearch}/>
+                {
+                    ( getUser() && ( getUser().roles && getUser().roles.includes("ROLE_ADMIN") ) ) && (
+
+                    <div className='w-full flex justify-center'>
+                        <button 
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                            onClick={() => navigate("/commandes")}
+                        >
+                            Commandes
+                        </button>
+                    </div>
+                    )
+                }
                 <Genres genres={genres} genre={genre} handleSetGenre={handleSetGenre}/>
-                <ListeLivres livres={livres} />
+                <ListeLivres livres={livres} genre={genre} />
             </div>
         </div>
-        <div>
-            <Link className='bg-indigo-500 w-full p-2 m-3 rounded-md text-white' to="/ajout">Ajouter un livre</Link>
-        </div>
+        {
+            ( getUser() && ( getUser().roles && getUser().roles.includes("ROLE_ADMIN") ) ) && (
+                <div>
+                    <Link className='bg-indigo-500 w-full p-2 m-3 rounded-md text-white' to="/ajout">Ajouter un livre</Link>
+                </div>
+            )
+        }
     </div>
   )
 }

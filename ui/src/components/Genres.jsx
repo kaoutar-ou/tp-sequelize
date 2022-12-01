@@ -12,11 +12,11 @@ const Genres = (props) => {
   }
   return (
     <div>
-      <div className="flex justify-center content-center flex-row mt-5">
+      <div className="flex justify-center content-center flex-row mt-5 flex-wrap">
         <div
             key={genre}
-          className={`py-1 px-2 outline outline-1 rounded-md m-2 outline-indigo-500 hover:bg-indigo-200 ${
-            genre === 0 ? "bg-indigo-500 text-white" : ""
+          className={`py-1 px-2 rounded-md m-2 shadow-md cursor-pointer hover:bg-indigo-200 ${
+            genre === 0 ? "bg-indigo-500 text-white" : "bg-white text-black"
           }`}
           onClick={() => handleSetGenre(0)}
         >
@@ -25,8 +25,8 @@ const Genres = (props) => {
         {genres.map((gnr) => (
           <div
           key={gnr.id}
-            className={`py-1 px-2 outline outline-1 rounded-md m-2 outline-indigo-500 hover:bg-indigo-200 ${
-              genre === gnr.id ? "bg-indigo-500 text-white" : ""
+            className={`py-1 px-2 rounded-md m-2 shadow-md cursor-pointer hover:bg-indigo-200 ${
+              genre === gnr.id ? "bg-indigo-500 text-white" : "bg-white text-black"
             }`}
             onClick={() => handleGenre(gnr)}
           >

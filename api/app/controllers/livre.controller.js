@@ -51,7 +51,7 @@ exports.findAll = async (req, res) => {
     let titre = req.query.titre;
     let genre = req.query.genre;
     let where = {};
-    console.log(genre);
+    
     if (titre) {
         where.titre = {
             [Op.like]: `%${titre}%`
@@ -103,7 +103,7 @@ exports.update = async (req, res) => {
             });
             return;
         }
-        console.log(livre.genreId);
+        
         livre.titre = req.body.titre ? req.body.titre : livre.titre;
         livre.description = req.body.description ? req.body.description : livre.description;
         livre.couverture = req.body.couverture ? req.body.couverture : livre.couverture;
@@ -124,7 +124,6 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     const id = req.params.id;
 
-    console.log(id);
     try {
         const livre = await Livre.findByPk(id);
         if (!livre) {

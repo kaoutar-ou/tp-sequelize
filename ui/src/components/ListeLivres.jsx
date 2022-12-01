@@ -7,12 +7,12 @@ const ListeLivres = (props) => {
     
   return (
     <div>
-        <div className="m-9 p-5 shadow-md">
+        <div className="m-9 p-5">
             <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 m-4">
             {
                     (livres?.length > 0) && 
                     livres.map((livre) => (
-                        <Livre livre={livre} key={livre.id} showGenre={genre === "all" ? true : false}/>
+                        <Livre livre={livre} key={livre.id} showGenre={genre == 0 ? true : false}/>
                     ))
                 }
             </div>

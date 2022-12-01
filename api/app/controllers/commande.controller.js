@@ -79,7 +79,7 @@ exports.createMany = async (req, res) => {
         where: {
             [Op.or]: [
                 { email: userInfo.email },
-                { telephone: userInfo.telephone }
+                // { telephone: userInfo.telephone }
             ]
         }
     });
@@ -93,14 +93,18 @@ exports.createMany = async (req, res) => {
             telephone: userInfo.telephone,
         };   
         try {
-            await User.create(user);
+            user = await User.create(user);
+            console.log("User created");
         } catch (error) {
             console.log(error);
         }
     }
 
     const commandes = req.body.commandes;
+    // console.log(commandes);
+    console.log("userId : " + user.dataValues.id);
     const userId = user.id;
+    console.log("🚀 ~ file: commande.controller.js:105 ~ exports.createMany= ~ userId", userId)
     if (!commandes || commandes.length && commandes.length < 1) {
         res.status(400).send({
             message: "Pas de commande."
@@ -155,11 +159,47 @@ exports.findAll = async (req, res) => {
                 {
                     model: Livre,
                     as: "Livre",
-                    attributes: ["id", "titre", "description", "couverture", "prix"]
+                    attributes: ["id", "titre", "description", "couverture", "prix", "quantite"],
                 }
             ]
         });
         res.status(200).send(commandes);
+    } catch (error) {
+        res.status(400).send({
+            message:
+                error.message || "Une erreur a été rencontré."
+        });
+    }
+}
+
+exports.updateStatus = async (req, res) => {
+    const commandeId = req.params.id;
+    const status = req.body.status;
+    if (!commandeId || !status) {
+        res.status(400).send({
+            message: "Vous devez remplir tous les champs."
+        });
+        return;
+    }
+    try {
+        const commande = await Commande.findByPk(commandeId);
+        if (!commande) {
+            res.status(400).send({
+                message: "Commande non trouvé."
+            });
+            return;
+        }
+        if (status == "Annulée") {
+            const livre = await Livre.findByPk(commande.LivreId);
+            livre.quantite = livre.quantite + commande.quantite;
+            await Livre.update(
+                { quantite: livre.quantite },
+                { where: { id: livre.id } }
+            );
+        }
+        commande.status = status;
+        await commande.save();
+        res.status(200).send(commande);
     } catch (error) {
         res.status(400).send({
             message:
