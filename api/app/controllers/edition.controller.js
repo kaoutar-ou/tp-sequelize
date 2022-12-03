@@ -58,3 +58,17 @@ exports.update = async (req, res) => {
         });
     }
 }
+
+exports.delete = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const edition = await Edition.findByPk(id);
+        await edition.destroy();
+        res.status(200).send();
+    } catch (error) {
+        res.status(400).send({
+            message:
+                error.message || "Une erreur a été rencontré."
+        });
+    }
+}

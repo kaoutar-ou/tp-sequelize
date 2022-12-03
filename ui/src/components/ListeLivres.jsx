@@ -3,7 +3,7 @@ import Livre from './Livre';
 
 const ListeLivres = (props) => {
 
-    const { livres, genre } = props;
+    const { livres, genre, fetchAllLivres } = props;
     
   return (
     <div>
@@ -12,7 +12,7 @@ const ListeLivres = (props) => {
             {
                     (livres?.length > 0) && 
                     livres.map((livre) => (
-                        <Livre livre={livre} key={livre.id} showGenre={genre == 0 ? true : false}/>
+                        <Livre fetchAllLivres={fetchAllLivres} livre={livre} key={livre.id} showGenre={genre == 0 ? true : false}/>
                     ))
                 }
             </div>

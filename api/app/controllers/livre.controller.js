@@ -6,7 +6,7 @@ const Edition = require('../models/Edition');
 exports.create = async (req, res) => {
     console.log("create");
     
-    if (!req.body.titre || !req.body.quantite || !req.body.description || !req.body.couverture || !req.body.prix || !req.body.genre || !req.body.date_parution || !req.body.maison_edition) {
+    if (!req.body.titre || !req.body.quantite || !req.body.description || !req.body.couverture || !req.body.prix || !req.body.genre || !req.body.editions ) {
         console.log("Vous devez remplir tous les champs.");
         res.status(400).send({
             message: "Vous devez remplir tous les champs."
@@ -14,30 +14,27 @@ exports.create = async (req, res) => {
         return;
     }
 
-    const livre = Livre.build({
+    let livre = {
         titre: req.body.titre,
         description: req.body.description,
         couverture: req.body.couverture,
         prix: req.body.prix,
         quantite: req.body.quantite,
-    });
-
-    livre.setGenre(req.body.genre);
-
-    const date_parution = req.body.date_parution
-    const edition = Edition.build({
-        date_parution: date_parution,
-        maison_edition: req.body.maison_edition,
-        livre_id: livre.id
-    });
-    // edition.setLivre(livre);
+        GenreId: req.body.genre
+    };
     
     try {
-        await edition.save(edition);
-        livre.addEdition(edition);
-        await livre.save(
+        livre = await Livre.create(
             livre
         );
+        req.body.editions.forEach(edition => {
+            let newEdition = Edition.create({
+                date_parution: edition.date_parution,
+                maison_edition: edition.maison_edition,
+                LivreId: livre.id
+            });
+            livre.addEdition(newEdition);
+        });
         res.status(200).send(livre);
     } catch (error) {
         res.status(400).send({
@@ -54,6 +51,9 @@ exports.findAll = async (req, res) => {
     
     if (titre) {
         where.titre = {
+            [Op.like]: `%${titre}%`
+        }
+        where.description = {
             [Op.like]: `%${titre}%`
         }
     }
@@ -110,7 +110,18 @@ exports.update = async (req, res) => {
         livre.prix = req.body.prix ? req.body.prix : livre.prix;
         livre.quantite = req.body.quantite ? req.body.quantite : livre.quantite;
         livre.setGenre(req.body.genre ? req.body.genre : livre.genreId);
-
+        if(req.body.editions) {
+            req.body.editions.forEach(edition => {
+                if(!edition.id) {
+                    let newEdition = Edition.create({
+                        date_parution: edition.date_parution,
+                        maison_edition: edition.maison_edition,
+                        LivreId: livre.id
+                    });
+                    livre.addEdition(newEdition);
+                }
+            });
+        }
         await livre.save();
         res.status(200).send(livre);
     } catch (error) {

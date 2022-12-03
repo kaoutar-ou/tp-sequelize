@@ -75,25 +75,25 @@ const Livres = () => {
 
                     <div className='w-full flex justify-center'>
                         <button 
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
-                            onClick={() => navigate("/commandes")}
+                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" 
+                            onClick={() => navigate("/ajout")}
                         >
-                            Commandes
+                            Ajouter livre
                         </button>
                     </div>
                     )
                 }
                 <Genres genres={genres} genre={genre} handleSetGenre={handleSetGenre}/>
-                <ListeLivres livres={livres} genre={genre} />
+                <ListeLivres livres={livres} fetchAllLivres={fetchAllLivres} genre={genre} />
             </div>
         </div>
-        {
+        {/* {
             ( getUser() && ( getUser().roles && getUser().roles.includes("ROLE_ADMIN") ) ) && (
                 <div>
                     <Link className='bg-indigo-500 w-full p-2 m-3 rounded-md text-white' to="/ajout">Ajouter un livre</Link>
                 </div>
             )
-        }
+        } */}
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { addAuthHeaders, getUser } from '../api/auth';
 
 const Livre = (props) => {
-    const { livre, showGenre } = props;
+    const { livre, showGenre, fetchAllLivres } = props;
     const navigate = useNavigate();
 
     const handleModifier = () => {
@@ -16,6 +16,7 @@ const Livre = (props) => {
         console.log("Supprimer le livre", livre.id);
         try {
             await axios.delete(`http://localhost:3002/api/livres/${livre.id}`, { headers: addAuthHeaders() });
+            fetchAllLivres();
         } catch (error) {
             console.log(error);
         }

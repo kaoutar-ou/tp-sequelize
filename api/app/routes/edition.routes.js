@@ -6,6 +6,7 @@ module.exports = app => {
     router.post("/", [verifyToken, isAdmin], editions.create);   
     router.get("/", editions.findAll);
     router.put("/:id", [verifyToken, isAdmin], editions.update);
+    router.delete("/:id", [verifyToken, isAdmin], editions.delete);
     
     app.use('/api/editions', router);
 }

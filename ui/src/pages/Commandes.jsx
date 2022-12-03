@@ -39,10 +39,10 @@ const Commandes = () => {
         getAllCommandes();
     }, []);
   return (
-    <div className='m-5'>
-        <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+    <div className='p-5 bg-slate-100 min-h-screen'>
+        <div className="overflow-x-auto relative shadow-md sm:rounded-md">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-600 uppercase bg-gray-50 dark:bg-indigo-200">
                     <tr>
                         <th scope="col" className="py-3 px-6">
                             Nom du livre
@@ -64,6 +64,8 @@ const Commandes = () => {
                         </th>
                     </tr>
                 </thead>
+                {
+                    (commandes && commandes.length > 0) ? (
                 <tbody>
                     {
                         (commandes && commandes.length > 0) && commandes.map((commande, index) => (
@@ -103,6 +105,15 @@ const Commandes = () => {
                         ))
                     }
                 </tbody>
+                    ) : (
+                            <tbody>
+                                <tr className="bg-white border-b">
+                                    <td className="py-4 px-6 text-center" colSpan="6">
+                                        Aucune commande
+                                    </td>
+                                </tr>
+                            </tbody>
+                    )}
             </table>
         </div>
     </div>
