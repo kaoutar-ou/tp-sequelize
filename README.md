@@ -1,5 +1,8 @@
 # Application de gestion des livres
 
+Cette application permet de gérer les livres.
+Nous avons deux types d'utilisateurs : les administrateurs qui gèrent les livres, les éditions et les commandes et les clients, qui peuvent emprunter des livres.
+
 ## Captures d'écran
 
 ### Inscription / login
